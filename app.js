@@ -17,6 +17,8 @@ const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
 
 const firedThisMinute = new Set();
 let lastMinuteKey = '';
+// id → absolute ms timestamp when the snooze expires
+const snoozedUntil = new Map();
 
 function isDueToday(reminder, now) {
   const r = reminder.recurrence;
@@ -39,8 +41,16 @@ function isDueToday(reminder, now) {
   return false;
 }
 
+function fireReminder(reminder) {
+  if ('Notification' in window && Notification.permission === 'granted') {
+    new Notification('Nudge', { body: reminder.message, tag: reminder.id });
+  }
+  showReminderToast(reminder);
+}
+
 function pollReminders() {
   const now = new Date();
+  const nowMs = now.getTime();
   const hh = String(now.getHours()).padStart(2, '0');
   const mm = String(now.getMinutes()).padStart(2, '0');
   const currentTime = `${hh}:${mm}`;
@@ -51,7 +61,14 @@ function pollReminders() {
     firedThisMinute.clear();
   }
 
-  if (!('Notification' in window) || Notification.permission !== 'granted') return;
+  // Fire any snoozed reminders whose snooze has expired
+  for (const [id, untilMs] of snoozedUntil) {
+    if (nowMs >= untilMs) {
+      snoozedUntil.delete(id);
+      const reminder = loadReminders().find((r) => r.id === id);
+      if (reminder) fireReminder(reminder);
+    }
+  }
 
   for (const reminder of loadReminders()) {
     if (reminder.time !== currentTime) continue;
@@ -61,11 +78,51 @@ function pollReminders() {
 
     if (!isDueToday(reminder, now)) continue;
 
+    // Skip reminders that are currently snoozed (they'll re-fire when snooze expires)
+    if (snoozedUntil.has(reminder.id)) continue;
+
     firedThisMinute.add(dedupKey);
-    // tag: reminder.id means the browser replaces a stale notification for the
-    // same reminder rather than stacking it — a second dedup layer for free.
-    new Notification('Nudge', { body: reminder.message, tag: reminder.id });
+    fireReminder(reminder);
   }
+}
+
+function showReminderToast(reminder) {
+  const existing = document.getElementById(`toast-${reminder.id}`);
+  if (existing) existing.remove();
+
+  const toast = document.createElement('div');
+  toast.className = 'reminder-toast';
+  toast.id = `toast-${reminder.id}`;
+  toast.innerHTML = `
+    <div class="reminder-toast-body">
+      <span class="reminder-toast-icon">&#128276;</span>
+      <span class="reminder-toast-message">${escapeHtml(reminder.message)}</span>
+    </div>
+    <div class="reminder-toast-actions">
+      <span class="reminder-toast-snooze-label">Snooze</span>
+      ${[5, 10, 15, 30].map((m) =>
+        `<button class="reminder-toast-snooze" data-minutes="${m}">${m} min</button>`
+      ).join('')}
+      <button class="reminder-toast-dismiss">Dismiss</button>
+    </div>
+  `;
+
+  let autoDismiss = setTimeout(() => toast.remove(), 30_000);
+
+  toast.querySelectorAll('.reminder-toast-snooze').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      clearTimeout(autoDismiss);
+      snoozedUntil.set(reminder.id, Date.now() + Number(btn.dataset.minutes) * 60 * 1000);
+      toast.remove();
+    });
+  });
+
+  toast.querySelector('.reminder-toast-dismiss').addEventListener('click', () => {
+    clearTimeout(autoDismiss);
+    toast.remove();
+  });
+
+  document.body.appendChild(toast);
 }
 
 async function requestNotificationPermission() {
