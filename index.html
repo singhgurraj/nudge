@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nudge</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div id="auth-bar" class="auth-bar"></div>
+
+    <div id="auth-panel" class="auth-panel" hidden>
+      <h2 id="auth-heading">Sign in</h2>
+      <form id="auth-form">
+        <div class="field">
+          <label for="auth-email">Email</label>
+          <input type="email" id="auth-email" placeholder="you@example.com" autocomplete="email" required />
+        </div>
+        <div class="field">
+          <label for="auth-password">Password</label>
+          <input type="password" id="auth-password" placeholder="Password" autocomplete="current-password" required />
+        </div>
+        <p id="auth-error" class="auth-error"></p>
+        <button type="submit" id="auth-submit" data-mode="login">Sign in</button>
+        <div class="auth-footer">
+          <button type="button" id="auth-toggle" class="auth-text-btn">Create account</button>
+          <button type="button" id="auth-cancel" class="auth-text-btn">Cancel</button>
+        </div>
+      </form>
+    </div>
+
+    <h1>Nudge</h1>
+    <p class="subtitle">Set a reminder. Don't forget.</p>
+
+    <form id="reminder-form">
+      <div class="field">
+        <label for="message">Message</label>
+        <input type="text" id="message" placeholder="Take a walk" required />
+      </div>
+      <div class="form-row">
+        <div class="field">
+          <label for="time">Time</label>
+          <input type="time" id="time" required />
+        </div>
+        <div class="field">
+          <label for="category">Category</label>
+          <select id="category"></select>
+        </div>
+      </div>
+      <div class="field">
+        <label for="recurrence">Repeat</label>
+        <select id="recurrence">
+          <option value="">Never</option>
+          <option value="daily">Daily</option>
+          <option value="weekly">Weekly</option>
+          <option value="custom">Custom interval</option>
+        </select>
+      </div>
+      <div id="weekly-options" class="field recurrence-extra" hidden>
+        <label>On days</label>
+        <div class="day-checkboxes">
+          <label class="day-cb"><input type="checkbox" name="dow" value="1" /><span class="day-cb-text">Mon</span></label>
+          <label class="day-cb"><input type="checkbox" name="dow" value="2" /><span class="day-cb-text">Tue</span></label>
+          <label class="day-cb"><input type="checkbox" name="dow" value="3" /><span class="day-cb-text">Wed</span></label>
+          <label class="day-cb"><input type="checkbox" name="dow" value="4" /><span class="day-cb-text">Thu</span></label>
+          <label class="day-cb"><input type="checkbox" name="dow" value="5" /><span class="day-cb-text">Fri</span></label>
+          <label class="day-cb"><input type="checkbox" name="dow" value="6" /><span class="day-cb-text">Sat</span></label>
+          <label class="day-cb"><input type="checkbox" name="dow" value="0" /><span class="day-cb-text">Sun</span></label>
+        </div>
+      </div>
+      <div id="custom-options" class="field recurrence-extra" hidden>
+        <label for="custom-interval">Interval</label>
+        <div class="interval-row">
+          <span>Every</span>
+          <input type="number" id="custom-interval" min="1" max="365" value="7" />
+          <span>days</span>
+        </div>
+      </div>
+      <button type="submit">Add reminder</button>
+    </form>
+
+    <div id="manage-panel" class="manage-panel" hidden>
+      <div class="manage-panel-header">
+        <span class="manage-panel-title">Categories</span>
+        <button type="button" id="manage-close" class="auth-text-btn">Done</button>
+      </div>
+      <div id="category-list-manage"></div>
+      <form id="add-category-form" class="add-category-form">
+        <input type="text" id="new-cat-name" placeholder="New category name" maxlength="30" required />
+        <div id="color-swatches" class="color-swatches"></div>
+        <button type="submit" class="add-cat-btn">Add</button>
+      </form>
+    </div>
+
+    <section id="reminders-section">
+      <div class="reminders-header">
+        <h2>Reminders</h2>
+        <button type="button" id="manage-btn" class="auth-link">Manage categories</button>
+      </div>
+      <div id="category-filters" class="category-filters"></div>
+      <ul id="reminder-list"></ul>
+      <p id="empty-state">No reminders yet.</p>
+    </section>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

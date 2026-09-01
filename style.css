@@ -1,0 +1,611 @@
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  background: #f5f5f5;
+  color: #111;
+  min-height: 100vh;
+  padding: 2rem 1rem;
+}
+
+/* --- Auth bar --- */
+
+.auth-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.625rem;
+  margin-bottom: 1.25rem;
+  font-size: 0.8125rem;
+  color: #666;
+}
+
+.auth-bar-email {
+  font-weight: 500;
+  color: #444;
+}
+
+.auth-link {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #111;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  padding: 0;
+}
+
+.auth-link:hover { opacity: 0.6; }
+
+/* --- Auth panel --- */
+
+.auth-panel {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  margin-bottom: 1.5rem;
+}
+
+.auth-panel h2 {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  text-transform: none;
+  letter-spacing: 0;
+  color: #111;
+}
+
+.auth-error {
+  font-size: 0.8125rem;
+  color: #e53e3e;
+  min-height: 1.25em;
+}
+
+.auth-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.625rem;
+}
+
+.auth-text-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.8125rem;
+  color: #888;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.auth-text-btn:hover { color: #111; }
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+}
+
+h1 {
+  font-size: 2rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.subtitle {
+  color: #666;
+  margin-top: 0.25rem;
+  margin-bottom: 2rem;
+}
+
+form {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+/* Side-by-side time + category */
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.75rem;
+}
+
+label {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #444;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+input[type="time"],
+select {
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 0.625rem 0.75rem;
+  font-size: 1rem;
+  width: 100%;
+  transition: border-color 0.15s;
+  background: #fff;
+  appearance: auto;
+}
+
+input:focus,
+select:focus {
+  outline: none;
+  border-color: #555;
+}
+
+button[type="submit"] {
+  margin-top: 0.25rem;
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.7rem 1rem;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+button[type="submit"]:hover {
+  opacity: 0.8;
+}
+
+/* --- Manage categories panel --- */
+
+.manage-panel {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.25rem 1.5rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+  margin-top: 1.25rem;
+}
+
+.manage-panel-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.manage-panel-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+#category-list-manage {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.manage-cat-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.manage-cat-swatch {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.manage-cat-name {
+  flex: 1;
+  font-size: 0.9375rem;
+}
+
+.manage-cat-default {
+  font-size: 0.75rem;
+  color: #bbb;
+  font-style: italic;
+}
+
+.delete-cat-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #bbb;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+
+.delete-cat-btn:hover { color: #e53e3e; }
+
+/* --- Add-category sub-form --- */
+
+.add-category-form {
+  background: none;
+  box-shadow: none;
+  border-top: 1px solid #f0f0f0;
+  border-radius: 0;
+  padding: 1rem 0 0;
+  gap: 0.75rem;
+}
+
+.add-category-form input[type="text"] {
+  font-size: 0.9375rem;
+}
+
+.color-swatches {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.color-swatch {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: transform 0.1s, box-shadow 0.1s;
+  flex-shrink: 0;
+}
+
+.color-swatch:hover {
+  transform: scale(1.15);
+}
+
+.color-swatch--active {
+  border-color: #111;
+  box-shadow: 0 0 0 2px #fff, 0 0 0 4px #111;
+}
+
+.add-cat-btn {
+  background: #111;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.55rem 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: opacity 0.15s;
+  align-self: flex-start;
+  margin-top: 0;
+}
+
+.add-cat-btn:hover { opacity: 0.8; }
+
+/* --- Reminders section --- */
+
+#reminders-section {
+  margin-top: 2rem;
+}
+
+.reminders-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.reminders-header h2 {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #444;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* --- Category filter pills --- */
+
+.category-filters {
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+  margin-bottom: 0.875rem;
+}
+
+.cat-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  background: #f0f0f0;
+  border: 1px solid transparent;
+  border-radius: 999px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  white-space: nowrap;
+}
+
+.cat-pill:hover {
+  background: #e4e4e4;
+  color: #111;
+}
+
+.cat-pill--active {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.cat-pill--active .cat-dot {
+  border: 1.5px solid rgba(255,255,255,0.5);
+}
+
+.cat-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+/* --- Reminder list --- */
+
+#reminder-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.reminder-item {
+  background: #fff;
+  border-radius: 10px;
+  padding: 0.875rem 1rem;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  transition: opacity 0.2s;
+  border-left: 3px solid var(--cat-color, #e5e7eb);
+}
+
+.reminder-item.is-done {
+  opacity: 0.6;
+}
+
+.done-btn {
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  border: 2px solid #ddd;
+  background: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+  margin-top: 2px;
+}
+
+.done-btn:hover:not(.done-btn--checked) {
+  border-color: #22c55e;
+  color: #22c55e;
+}
+
+.done-btn--checked {
+  border-color: #22c55e;
+  background: #22c55e;
+  color: #fff;
+  cursor: default;
+}
+
+.reminder-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  min-width: 0;
+}
+
+.reminder-message {
+  font-weight: 500;
+  overflow-wrap: break-word;
+  min-width: 0;
+}
+
+.reminder-time {
+  font-size: 0.875rem;
+  color: #888;
+}
+
+.reminder-meta {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+  margin-top: 2px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+/* Category badge on reminder card */
+.cat-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--cat-color, #9ca3af);
+  background: color-mix(in srgb, var(--cat-color, #9ca3af) 12%, #fff);
+  border: 1px solid color-mix(in srgb, var(--cat-color, #9ca3af) 25%, transparent);
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  white-space: nowrap;
+}
+
+.streak {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #f97316;
+  background: #fff7ed;
+  border-radius: 999px;
+  padding: 0.2rem 0.55rem;
+  white-space: nowrap;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #bbb;
+  font-size: 1.1rem;
+  line-height: 1;
+  padding: 0.25rem;
+  border-radius: 4px;
+  transition: color 0.15s;
+  flex-shrink: 0;
+}
+
+.delete-btn:hover {
+  color: #e53e3e;
+}
+
+#empty-state {
+  color: #aaa;
+  font-size: 0.9rem;
+}
+
+/* --- Focus styles --- */
+
+button:focus-visible {
+  outline: 2px solid #555;
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+
+.done-btn:focus-visible {
+  outline-offset: 3px;
+  border-radius: 50%;
+}
+
+.done-btn--checked:focus-visible {
+  outline-color: #16a34a;
+}
+
+/* --- Recurrence form fields --- */
+
+.recurrence-extra {
+  animation: fade-in 0.15s ease;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.day-checkboxes {
+  display: flex;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.day-cb {
+  position: relative;
+  cursor: pointer;
+}
+
+.day-cb input[type="checkbox"] {
+  position: absolute;
+  opacity: 0;
+  width: 0 !important;
+  height: 0 !important;
+  padding: 0 !important;
+  border: none !important;
+  pointer-events: none;
+}
+
+.day-cb-text {
+  display: inline-block;
+  padding: 0.3rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid #ddd;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #555;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+  user-select: none;
+}
+
+.day-cb input:checked ~ .day-cb-text {
+  background: #111;
+  color: #fff;
+  border-color: #111;
+}
+
+.day-cb-text:hover {
+  border-color: #999;
+  color: #111;
+}
+
+.interval-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.interval-row span {
+  font-size: 0.9375rem;
+  color: #555;
+  white-space: nowrap;
+}
+
+.interval-row input[type="number"] {
+  width: 5rem;
+  text-align: center;
+}
+
+/* --- Recurrence badge on reminder card --- */
+
+.recurrence-badge {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #6366f1;
+  background: #eef2ff;
+  border-radius: 999px;
+  padding: 0.15rem 0.5rem;
+  white-space: nowrap;
+}
+
+/* --- Narrow screens --- */
+
+@media (max-width: 400px) {
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+
+  .streak {
+    display: none;
+  }
+
+  .cat-badge {
+    display: none;
+  }
+}
